@@ -48,7 +48,7 @@ module Unione
         message: {
           subject: mail.subject,
           from_email: mail.from.first,
-          from_name: sender_name(mail.From.unparsed_value),
+          from_name: sender_name(mail.From.instance_variable_get(:@unparsed_value)),
           recipients: recipients,
           body: { html: mail_body },
           inline_attachments: inline_attachments
