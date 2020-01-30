@@ -19,7 +19,7 @@ module Unione
 
     def deliver!(mail)
       recipients = []
-      inline_attachments = []
+      inline_attachments = attachments = []
       mail_to    = [*mail.to]
 
       @logger.info "--- UNIONE: deliver! method ---"
@@ -35,8 +35,12 @@ module Unione
 
       mail.attachments.each do |attachment|
         @logger.info "--- UNIONE:MAIL attachments #{attachment.inspect}"
+        
+        att_hash = { type: attachment.content_type, name: attachment.filename, content: Base64.encode64(attachment.body.decoded) }
         if attachment.filename.match('inline').present?
-          inline_attachments << { type: attachment[:type].to_s, name: attachment[:name].to_s, content: Base64.encode64(File.read(attachment[:fileurl].to_s)) }
+          inline_attachments << att_hash
+        else
+          attachments << att_hash
         end
       end
 
@@ -47,7 +51,8 @@ module Unione
           from_name: sender_name(mail.From.instance_variable_get(:@unparsed_value)),
           recipients: recipients,
           body: { html: mail_body },
-          inline_attachments: inline_attachments
+          inline_attachments: inline_attachments,
+          attachments: attachments
         }
       }
 
