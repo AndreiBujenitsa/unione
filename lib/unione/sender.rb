@@ -30,12 +30,8 @@ module Unione
       mail_to.each do |email_address|
         recipients << {email: email_address}
       end
-
-      mail_body = if mail.attachments.present?
-        mail.html_part.body.raw_source
-      else
-        mail.body.raw_source
-      end
+     
+      mail_body = mail.html_part.body.raw_source rescue mail.text_part.body.raw_source || mail.body.raw_source.presence
 
       mail.attachments.each do |attachment|
         @logger.info "--- UNIONE:MAIL attachments #{attachment.inspect}"
