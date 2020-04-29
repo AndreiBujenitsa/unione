@@ -55,7 +55,7 @@ module Unione
           attachments: attachments
         }
       }
-      @logger.info "--- UNIONE: send_params #{send_params.inspect} ---"
+
       @logger.info "--- UNIONE: send emails ---"
 
       @settings[:history_status_model].create(status: 'send', comment: "Отправка письма #{mail.subject}") if @settings[:history_status_model].present?
