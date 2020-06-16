@@ -32,7 +32,7 @@ module Unione
       end
      
       mail_body = mail.html_part.body.raw_source rescue mail.text_part&.body&.raw_source || mail.body.raw_source.presence
-      mail_body = mail_body.gsub(/[\r\n]+/, "<br>")
+      mail_body = mail_body&.gsub(/[\r\n]+/, "<br>") if mail.text?
 
       mail.attachments.each do |attachment|
         @logger.info "--- UNIONE:MAIL attachments #{attachment.inspect}"
