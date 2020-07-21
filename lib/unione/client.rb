@@ -50,7 +50,7 @@ module Unione
     def send_emails(params)
       params.merge!({ "api_key" => api_key, "username"=> username })
 
-      url = "https://one.unisender.com/ru/transactional/api/v1/email/send.json"
+      url = "https://eu1.unione.io/ru/transactional/api/v1/email/send.json"
       uri = URI.parse(url)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
